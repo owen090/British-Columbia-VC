@@ -147,108 +147,107 @@ export default function Home() {
 
       <Footer />
 
-      <style jsx>{`
-        body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          background-image: url('background-image.jpg');
-          background-size: cover;
-          background-position: center;
-          color: #fff;
-        }
-        .navbar {
-          width: 100%;
-          background-color: rgba(0, 0, 0, 0.8);
-          overflow: auto;
-          padding: 15px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-        .navbar a {
-          color: white;
-          text-align: center;
-          padding: 14px 20px;
-          text-decoration: none;
-          font-size: 17px;
-        }
-        .navbar a:hover {
-          background-color: #ddd;
-          color: black;
-        }
-        .title {
-          font-size: 24px;
-          font-weight: bold;
-        }
-        .container {
-          background-color: rgba(0, 0, 0, 0.7);
-          padding: 20px;
-          border-radius: 8px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          width: 300px;
-          text-align: center;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-        form {
-          margin-bottom: 20px;
-        }
-        input,
-        button {
-          margin: 8px 0;
-          padding: 8px;
-          width: calc(100% - 16px);
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-size: 16px;
-        }
-        button {
-          background-color: #4caf50;
-          color: white;
-          border: none;
-          cursor: pointer;
-        }
-        button:hover {
-          background-color: #45a049;
-        }
-        #signup-message,
-        #login-message {
-          color: red;
-          margin-top: 10px;
-        }
-        .password-strength {
-          height: 10px;
-          width: 100%;
-          background-color: #ddd;
-          border-radius: 4px;
-          margin: 8px 0;
-        }
-        .strength-bar {
-          height: 100%;
-          width: 0;
-          background-color: red;
-          border-radius: 4px;
-          transition: width 0.3s;
-        }
-        .login-link {
-          color: #4caf50;
-          text-decoration: none;
-          font-weight: bold;
-        }
-        .login-link:hover {
-          text-decoration: underline;
-        }
-        .complexity-label {
-          text-align: left;
-          font-size: 14px;
-          margin-top: 8px;
-        }
-      `}</style>
+     <style jsx>{`
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-image: url('background-image.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .navbar {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  .navbar a {
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .navbar a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+  }
+  form {
+    margin-bottom: 20px;
+  }
+  input,
+  button {
+    margin: 8px 0;
+    padding: 8px;
+    width: calc(100% - 16px);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  #signup-message,
+  #login-message {
+    color: red;
+    margin-top: 10px;
+  }
+  .password-strength {
+    height: 10px;
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 4px;
+    margin: 8px 0;
+  }
+  .strength-bar {
+    height: 100%;
+    width: 0;
+    background-color: red;
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+  .login-link {
+    color: #4caf50;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .login-link:hover {
+    text-decoration: underline;
+  }
+  .complexity-label {
+    text-align: left;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+`}</style>
     </div>
   );
 }
