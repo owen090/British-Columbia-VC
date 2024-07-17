@@ -1,8 +1,108 @@
+import { useEffect } from 'react';
 import Head from 'next/head';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 
 export default function Home() {
+  useEffect(() => {
+    function signup(event) {
+      event.preventDefault();
+      const username = document.getElementById('signup-username').value;
+      const password = document.getElementById('signup-password').value;
+      fetch('/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showMessage('Sign-up successful!');
+          } else {
+            showMessage(`Sign-up failed: ${data.message}`);
+          }
+        });
+    }
+
+    function login(event) {
+      event.preventDefault();
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showLoginMessage('Login successful!');
+          } else {
+            showLoginMessage(`Login failed: ${data.message}`);
+          }
+        });
+    }
+
+    function showMessage(message) {
+      document.getElementById('signup-message').textContent = message;
+    }
+
+    function showLoginMessage(message) {
+      document.getElementById('login-message').textContent = message;
+    }
+
+    function checkPasswordStrength() {
+      const password = document.getElementById('signup-password').value;
+      const strengthBar = document.getElementById('strength-bar');
+      let strength = 0;
+      if (password.length >= 8) strength += 1;
+      if (password.match(/[a-z]+/)) strength += 1;
+      if (password.match(/[A-Z]+/)) strength += 1;
+      if (password.match(/[0-9]+/)) strength += 1;
+      if (password.match(/[$@#&!]+/)) strength += 1;
+      switch (strength) {
+        case 0:
+          strengthBar.style.width = '0';
+          strengthBar.style.backgroundColor = 'red';
+          break;
+        case 1:
+          strengthBar.style.width = '20%';
+          strengthBar.style.backgroundColor = 'red';
+          break;
+        case 2:
+          strengthBar.style.width = '40%';
+          strengthBar.style.backgroundColor = 'orange';
+          break;
+        case 3:
+          strengthBar.style.width = '60%';
+          strengthBar.style.backgroundColor = 'yellow';
+          break;
+        case 4:
+          strengthBar.style.width = '80%';
+          strengthBar.style.backgroundColor = 'lightgreen';
+          break;
+        case 5:
+          strengthBar.style.width = '100%';
+          strengthBar.style.backgroundColor = 'green';
+          break;
+      }
+    }
+
+    function showLogin() {
+      document.getElementById('signup-container').style.display = 'none';
+      document.getElementById('login-container').style.display = 'block';
+    }
+
+    document.getElementById('signup-form').addEventListener('submit', signup);
+    document.getElementById('login-form').addEventListener('submit', login);
+    document.getElementById('signup-password').addEventListener('input', checkPasswordStrength);
+    document.querySelector('.login-link').addEventListener('click', showLogin);
+  }, []);
+
   return (
     <div className="container">
       <Head>
@@ -22,9 +122,9 @@ export default function Home() {
 
       <div className="container" id="signup-container">
         <h1>Sign Up</h1>
-        <form id="signup-form" onSubmit={signup}>
+        <form id="signup-form">
           <input type="text" id="signup-username" placeholder="Username" required />
-          <input type="password" id="signup-password" placeholder="Password" required onInput={checkPasswordStrength} />
+          <input type="password" id="signup-password" placeholder="Password" required />
           <div className="complexity-label">Complexity level</div>
           <div className="password-strength">
             <div className="strength-bar" id="strength-bar"></div>
@@ -32,12 +132,12 @@ export default function Home() {
           <button type="submit">Sign Up</button>
         </form>
         <p id="signup-message"></p>
-        <p>Already signed up? <a href="#" className="login-link" onClick={showLogin}>Log in here</a></p>
+        <p>Already signed up? <a href="#" className="login-link">Log in here</a></p>
       </div>
 
       <div className="container" id="login-container" style={{ display: 'none' }}>
         <h1>Login</h1>
-        <form id="login-form" onSubmit={login}>
+        <form id="login-form">
           <input type="text" id="login-username" placeholder="Username" required />
           <input type="password" id="login-password" placeholder="Password" required />
           <button type="submit">Login</button>
@@ -149,91 +249,6 @@ export default function Home() {
           margin-top: 8px;
         }
       `}</style>
-
-      <script>
-        async function signup(event) {
-          event.preventDefault();
-          const username = document.getElementById('signup-username').value;
-          const password = document.getElementById('signup-password').value;
-          const response = await fetch('/signup', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-          });
-          const data = await response.json();
-          if (response.ok) {
-            showMessage('Sign-up successful!');
-          } else {
-            showMessage(`Sign-up failed: ${data.message}`);
-          }
-        }
-        async function login(event) {
-          event.preventDefault();
-          const username = document.getElementById('login-username').value;
-          const password = document.getElementById('login-password').value;
-          const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-          });
-          const data = await response.json();
-          if (response.ok) {
-            showLoginMessage('Login successful!');
-          } else {
-            showLoginMessage(`Login failed: ${data.message}`);
-          }
-        }
-        function showMessage(message) {
-          document.getElementById('signup-message').textContent = message;
-        }
-        function showLoginMessage(message) {
-          document.getElementById('login-message').textContent = message;
-        }
-        function checkPasswordStrength() {
-          const password = document.getElementById('signup-password').value;
-          const strengthBar = document.getElementById('strength-bar');
-          let strength = 0;
-          if (password.length >= 8) strength += 1;
-          if (password.match(/[a-z]+/)) strength += 1;
-          if (password.match(/[A-Z]+/)) strength += 1;
-          if (password.match(/[0-9]+/)) strength += 1;
-          if (password.match(/[$@#&!]+/)) strength += 1;
-          switch (strength) {
-            case 0:
-              strengthBar.style.width = '0';
-              strengthBar.style.backgroundColor = 'red';
-              break;
-            case 1:
-              strengthBar.style.width = '20%';
-              strengthBar.style.backgroundColor = 'red';
-              break;
-            case 2:
-              strengthBar.style.width = '40%';
-              strengthBar.style.backgroundColor = 'orange';
-              break;
-            case 3:
-              strengthBar.style.width = '60%';
-              strengthBar.style.backgroundColor = 'yellow';
-              break;
-            case 4:
-              strengthBar.style.width = '80%';
-              strengthBar.style.backgroundColor = 'lightgreen';
-              break;
-            case 5:
-              strengthBar.style.width = '100%';
-              strengthBar.style.backgroundColor = 'green';
-              break;
-          }
-        }
-        function showLogin() {
-          document.getElementById('signup-container').style.display = 'none';
-          document.getElementById('login-container').style.display = 'block';
-        }
-      </script>
     </div>
   );
 }
