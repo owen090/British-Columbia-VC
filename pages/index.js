@@ -53,17 +53,18 @@ export default function Home() {
         <div className="form-container">
           {!isLoginVisible ? (
             <div id="signup-container">
-              <h1>Sign Up</h1>
+              <h1 style={{ color: '#fff' }}>Sign Up</h1>
               <form id="signup-form" onSubmit={(e) => e.preventDefault()}>
-                <input type="text" id="signup-username" placeholder="Username" required />
+                <input type="text" id="signup-username" placeholder="Username" required style={{ color: '#000' }} />
                 <input
                   type="password"
                   id="signup-password"
                   placeholder="Password"
                   required
                   ref={passwordInputRef}
+                  style={{ color: '#000' }}
                 />
-                <div className="complexity-label">Password complexity level</div>
+                <div className="complexity-label" style={{ color: '#fff' }}>Password complexity level</div>
                 <div className="password-strength">
                   <div
                     className="strength-bar"
@@ -75,14 +76,14 @@ export default function Home() {
                 </div>
                 <button type="submit">Sign Up</button>
               </form>
-              <p id="signup-message"></p>
+              <p id="signup-message" style={{ color: '#fff' }}></p>
               <p>
                 Already signed up?{' '}
                 <a
                   href="#"
                   className="login-link"
                   onClick={() => setIsLoginVisible(true)}
-                  style={{ color: '#4caf50' }}
+                  style={{ color: '#4caf50', textDecoration: 'none' }}
                 >
                   Log in here
                 </a>
@@ -90,13 +91,13 @@ export default function Home() {
             </div>
           ) : (
             <div id="login-container">
-              <h1>Login</h1>
+              <h1 style={{ color: '#fff' }}>Login</h1>
               <form id="login-form" onSubmit={(e) => e.preventDefault()}>
-                <input type="text" id="login-username" placeholder="Username" required />
-                <input type="password" id="login-password" placeholder="Password" required />
-                <button type="submit">Login</button>
+                <input type="text" id="login-username" placeholder="Username" required style={{ color: '#000' }} />
+                <input type="password" id="login-password" placeholder="Password" required style={{ color: '#000' }} />
+                <button type="submit" style={{ color: '#fff' }}>Login</button>
               </form>
-              <p id="login-message"></p>
+              <p id="login-message" style={{ color: '#fff' }}></p>
             </div>
           )}
         </div>
@@ -168,7 +169,6 @@ export default function Home() {
           border: 1px solid #ccc;
           border-radius: 4px;
           font-size: 16px;
-          color: #000; /* Black text for inputs and buttons */
         }
 
         button {
