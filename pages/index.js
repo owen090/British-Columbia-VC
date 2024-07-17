@@ -1,9 +1,10 @@
 import Head from 'next/head'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Home() {
   const [passwordStrength, setPasswordStrength] = useState(0)
   const [isLoginVisible, setIsLoginVisible] = useState(false)
+  const passwordInputRef = useRef(null)
 
   const checkPasswordStrength = (password) => {
     let strength = 0
@@ -17,10 +18,12 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const passwordInput = document.getElementById('signup-password')
-    passwordInput.addEventListener('input', (event) => {
-      checkPasswordStrength(event.target.value)
-    })
+    const passwordInput = passwordInputRef.current
+    if (passwordInput) {
+      passwordInput.addEventListener('input', (event) => {
+        checkPasswordStrength(event.target.value)
+      })
+    }
   }, [])
 
   const getStrengthColor = (strength) => {
@@ -53,7 +56,13 @@ export default function Home() {
               <h1>Sign Up</h1>
               <form id="signup-form" onSubmit={(e) => e.preventDefault()}>
                 <input type="text" id="signup-username" placeholder="Username" required />
-                <input type="password" id="signup-password" placeholder="Password" required />
+                <input
+                  type="password"
+                  id="signup-password"
+                  placeholder="Password"
+                  required
+                  ref={passwordInputRef}
+                />
                 <div className="complexity-label">Password complexity level</div>
                 <div className="password-strength">
                   <div
@@ -67,7 +76,17 @@ export default function Home() {
                 <button type="submit">Sign Up</button>
               </form>
               <p id="signup-message"></p>
-              <p>Already signed up? <a href="#" className="login-link" onClick={() => setIsLoginVisible(true)}>Log in here</a></p>
+              <p>
+                Already signed up?{' '}
+                <a
+                  href="#"
+                  className="login-link"
+                  onClick={() => setIsLoginVisible(true)}
+                  style={{ color: '#4caf50' }}
+                >
+                  Log in here
+                </a>
+              </p>
             </div>
           ) : (
             <div id="login-container">
@@ -149,6 +168,7 @@ export default function Home() {
           border: 1px solid #ccc;
           border-radius: 4px;
           font-size: 16px;
+          color: #000; /* Black text for inputs and buttons */
         }
 
         button {
