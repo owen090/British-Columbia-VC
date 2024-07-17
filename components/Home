@@ -1,0 +1,10 @@
+<form id="signup-form" onSubmit={handleSignUp}>
+  {/* Input fields */}
+  <button type="submit">Sign Up</button>
+</form>
+
+<form id="login-form" onSubmit={handleLogin}>
+  {/* Input fields */}
+  <button type="submit">Login</button>
+</form>
+
