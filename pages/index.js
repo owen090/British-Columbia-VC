@@ -1,57 +1,92 @@
-import Head from 'next/head';
-import { useState, useRef, useEffect } from 'react';
+import Head from 'next/head'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Home() {
-  const [passwordStrength, setPasswordStrength] = useState(0);
-  const [isLoginVisible, setIsLoginVisible] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0)
+  const [isLoginVisible, setIsLoginVisible] = useState(false)
+  const passwordInputRef = useRef(null)
 
-  const passwordInputRef = useRef(null);
-
+  // Handler for sign-up form submission
   const handleSignUp = async (e) => {
     e.preventDefault();
     const username = document.getElementById('signup-username').value;
     const password = document.getElementById('signup-password').value;
 
-    // Mocking signup logic without axios
-    console.log(`Signing up user: ${username} with password: ${password}`);
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        console.log('Signup successful');
+        // Optionally, you can redirect or show a success message
+      } else {
+        console.error('Signup failed');
+        // Handle signup failure (show error message, reset form, etc.)
+      }
+    } catch (error) {
+      console.error('Error during signup:', error);
+    }
   };
 
+  // Handler for login form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
-    // Mocking login logic without axios
-    console.log(`Logging in user: ${username} with password: ${password}`);
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        console.log('Login successful');
+        // Optionally, you can redirect or update user authentication state
+      } else {
+        console.error('Login failed');
+        // Handle login failure (show error message, reset form, etc.)
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   const checkPasswordStrength = (password) => {
-    let strength = 0;
-    if (password.length >= 8) strength += 1;
-    if (password.match(/[a-z]+/)) strength += 1;
-    if (password.match(/[A-Z]+/)) strength += 1;
-    if (password.match(/[0-9]+/)) strength += 1;
-    if (password.match(/[$@#&!]+/)) strength += 1;
+    let strength = 0
+    if (password.length >= 8) strength += 1
+    if (password.match(/[a-z]+/)) strength += 1
+    if (password.match(/[A-Z]+/)) strength += 1
+    if (password.match(/[0-9]+/)) strength += 1
+    if (password.match(/[$@#&!]+/)) strength += 1
 
-    setPasswordStrength(strength * 20);
-  };
+    setPasswordStrength(strength * 20)
+  }
 
   useEffect(() => {
-    const passwordInput = passwordInputRef.current;
+    const passwordInput = passwordInputRef.current
     if (passwordInput) {
       passwordInput.addEventListener('input', (event) => {
-        checkPasswordStrength(event.target.value);
-      });
+        checkPasswordStrength(event.target.value)
+      })
     }
-  }, []);
+  }, [])
 
   const getStrengthColor = (strength) => {
-    if (strength < 40) return 'red';
-    if (strength < 60) return 'orange';
-    if (strength < 80) return 'yellow';
-    if (strength < 100) return 'lightgreen';
-    return 'green';
-  };
+    if (strength < 40) return 'red'
+    if (strength < 60) return 'orange'
+    if (strength < 80) return 'yellow'
+    if (strength < 100) return 'lightgreen'
+    return 'green'
+  }
 
   return (
     <div className="container">
@@ -239,5 +274,5 @@ export default function Home() {
         }
       `}</style>
     </div>
-  );
+  )
 }
