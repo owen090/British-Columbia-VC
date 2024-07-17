@@ -103,7 +103,7 @@ export default function Home() {
         </div>
       </main>
 
-      <style jsx global>{`
+      <style jsx>{`
         body {
           font-family: Arial, sans-serif;
           margin: 0;
