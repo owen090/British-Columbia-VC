@@ -1,11 +1,10 @@
-import Head from 'next/head'
-import { useState, useRef } from 'react'
+import Head from 'next/head';
+import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Home() {
-  const [passwordStrength, setPasswordStrength] = useState(0)
-  const [isLoginVisible, setIsLoginVisible] = useState(false)
-
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [isLoginVisible, setIsLoginVisible] = useState(false);
   const passwordInputRef = useRef(null);
 
   const handleSignUp = async (e) => {
@@ -39,32 +38,32 @@ export default function Home() {
   };
 
   const checkPasswordStrength = (password) => {
-    let strength = 0
-    if (password.length >= 8) strength += 1
-    if (password.match(/[a-z]+/)) strength += 1
-    if (password.match(/[A-Z]+/)) strength += 1
-    if (password.match(/[0-9]+/)) strength += 1
-    if (password.match(/[$@#&!]+/)) strength += 1
+    let strength = 0;
+    if (password.length >= 8) strength += 1;
+    if (password.match(/[a-z]+/)) strength += 1;
+    if (password.match(/[A-Z]+/)) strength += 1;
+    if (password.match(/[0-9]+/)) strength += 1;
+    if (password.match(/[$@#&!]+/)) strength += 1;
 
-    setPasswordStrength(strength * 20)
-  }
+    setPasswordStrength(strength * 20);
+  };
 
   useEffect(() => {
-    const passwordInput = passwordInputRef.current
+    const passwordInput = passwordInputRef.current;
     if (passwordInput) {
       passwordInput.addEventListener('input', (event) => {
-        checkPasswordStrength(event.target.value)
-      })
+        checkPasswordStrength(event.target.value);
+      });
     }
-  }, [])
+  }, []);
 
   const getStrengthColor = (strength) => {
-    if (strength < 40) return 'red'
-    if (strength < 60) return 'orange'
-    if (strength < 80) return 'yellow'
-    if (strength < 100) return 'lightgreen'
-    return 'green'
-  }
+    if (strength < 40) return 'red';
+    if (strength < 60) return 'orange';
+    if (strength < 80) return 'yellow';
+    if (strength < 100) return 'lightgreen';
+    return 'green';
+  };
 
   return (
     <div className="container">
@@ -74,10 +73,16 @@ export default function Home() {
       </Head>
 
       <header className="navbar">
-        <div className="title" style={{ color: '#fff' }}>British Columbia, Vancouver</div>
+        <div className="title" style={{ color: '#fff' }}>
+          British Columbia, Vancouver
+        </div>
         <div>
-          <a href="#" style={{ color: '#fff' }}>Home</a>
-          <a href="#" style={{ color: '#fff' }}>Privacy Policy</a>
+          <a href="#" style={{ color: '#fff' }}>
+            Home
+          </a>
+          <a href="#" style={{ color: '#fff' }}>
+            Privacy Policy
+          </a>
         </div>
       </header>
 
@@ -87,7 +92,13 @@ export default function Home() {
             <div id="signup-container">
               <h1 style={{ color: '#fff' }}>Sign Up</h1>
               <form id="signup-form" onSubmit={handleSignUp}>
-                <input type="text" id="signup-username" placeholder="Username" required style={{ color: '#000' }} />
+                <input
+                  type="text"
+                  id="signup-username"
+                  placeholder="Username"
+                  required
+                  style={{ color: '#000' }}
+                />
                 <input
                   type="password"
                   id="signup-password"
@@ -96,7 +107,9 @@ export default function Home() {
                   ref={passwordInputRef}
                   style={{ color: '#000' }}
                 />
-                <div className="complexity-label" style={{ color: '#fff' }}>Password complexity level</div>
+                <div className="complexity-label" style={{ color: '#fff' }}>
+                  Password complexity level
+                </div>
                 <div className="password-strength">
                   <div
                     className="strength-bar"
@@ -125,9 +138,23 @@ export default function Home() {
             <div id="login-container">
               <h1 style={{ color: '#fff' }}>Login</h1>
               <form id="login-form" onSubmit={handleLogin}>
-                <input type="text" id="login-username" placeholder="Username" required style={{ color: '#000' }} />
-                <input type="password" id="login-password" placeholder="Password" required style={{ color: '#000' }} />
-                <button type="submit" style={{ color: '#fff' }}>Login</button>
+                <input
+                  type="text"
+                  id="login-username"
+                  placeholder="Username"
+                  required
+                  style={{ color: '#000' }}
+                />
+                <input
+                  type="password"
+                  id="login-password"
+                  placeholder="Password"
+                  required
+                  style={{ color: '#000' }}
+                />
+                <button type="submit" style={{ color: '#fff' }}>
+                  Login
+                </button>
               </form>
               <p id="login-message" style={{ color: '#fff' }}></p>
             </div>
@@ -252,5 +279,5 @@ export default function Home() {
         }
       `}</style>
     </div>
-  )
+  );
 }
