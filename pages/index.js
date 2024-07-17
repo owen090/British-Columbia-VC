@@ -1,10 +1,27 @@
 import Head from 'next/head'
 import { useState, useEffect, useRef } from 'react'
+import fs from 'fs'; // Node.js file system module, only works on server-side in Next.js
 
 export default function Home() {
   const [passwordStrength, setPasswordStrength] = useState(0)
   const [isLoginVisible, setIsLoginVisible] = useState(false)
-  const passwordInputRef = useRef(null)
+  const [users, setUsers] = useState([]); // State to store users
+
+  const passwordInputRef = useRef(null);
+
+  // Load users from file on initial component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fs.promises.readFile('users.json', 'utf8');
+        setUsers(JSON.parse(data));
+      } catch (error) {
+        console.error('Error reading users file:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Handler for sign-up form submission
   const handleSignUp = async (e) => {
@@ -12,22 +29,17 @@ export default function Home() {
     const username = document.getElementById('signup-username').value;
     const password = document.getElementById('signup-password').value;
 
-    try {
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+    const newUser = { username, password };
 
-      if (response.ok) {
-        console.log('Signup successful');
-        // Optionally, you can redirect or show a success message
-      } else {
-        console.error('Signup failed');
-        // Handle signup failure (show error message, reset form, etc.)
-      }
+    try {
+      // Save new user to state (temporary storage)
+      setUsers([...users, newUser]);
+
+      // Save users state to file
+      await fs.promises.writeFile('users.json', JSON.stringify(users));
+
+      // Optionally, you can clear form fields or show a success message
+      console.log('Signup successful');
     } catch (error) {
       console.error('Error during signup:', error);
     }
@@ -39,24 +51,15 @@ export default function Home() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+    // Dummy login logic for demonstration (not secure)
+    const user = users.find((user) => user.username === username && user.password === password);
 
-      if (response.ok) {
-        console.log('Login successful');
-        // Optionally, you can redirect or update user authentication state
-      } else {
-        console.error('Login failed');
-        // Handle login failure (show error message, reset form, etc.)
-      }
-    } catch (error) {
-      console.error('Error during login:', error);
+    if (user) {
+      console.log('Login successful');
+      // Optionally, you can redirect or update user authentication state
+    } else {
+      console.error('Login failed');
+      // Handle login failure (show error message, reset form, etc.)
     }
   };
 
