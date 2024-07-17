@@ -1,65 +1,40 @@
 import Head from 'next/head'
-import { useState, useEffect, useRef } from 'react'
-import fs from 'fs'; // Node.js file system module, only works on server-side in Next.js
+import { useState, useRef } from 'react'
+import axios from 'axios';
 
 export default function Home() {
   const [passwordStrength, setPasswordStrength] = useState(0)
   const [isLoginVisible, setIsLoginVisible] = useState(false)
-  const [users, setUsers] = useState([]); // State to store users
 
   const passwordInputRef = useRef(null);
 
-  // Load users from file on initial component mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fs.promises.readFile('users.json', 'utf8');
-        setUsers(JSON.parse(data));
-      } catch (error) {
-        console.error('Error reading users file:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Handler for sign-up form submission
   const handleSignUp = async (e) => {
     e.preventDefault();
     const username = document.getElementById('signup-username').value;
     const password = document.getElementById('signup-password').value;
 
-    const newUser = { username, password };
-
     try {
-      // Save new user to state (temporary storage)
-      setUsers([...users, newUser]);
-
-      // Save users state to file
-      await fs.promises.writeFile('users.json', JSON.stringify(users));
-
-      // Optionally, you can clear form fields or show a success message
-      console.log('Signup successful');
+      const response = await axios.post('/api/signup', { username, password });
+      console.log(response.data.message);
+      // Optionally, handle success (clear form, show message, etc.)
     } catch (error) {
-      console.error('Error during signup:', error);
+      console.error('Signup failed:', error.response.data.error);
+      // Optionally, handle failure (show error message, reset form, etc.)
     }
   };
 
-  // Handler for login form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
-    // Dummy login logic for demonstration (not secure)
-    const user = users.find((user) => user.username === username && user.password === password);
-
-    if (user) {
-      console.log('Login successful');
-      // Optionally, you can redirect or update user authentication state
-    } else {
-      console.error('Login failed');
-      // Handle login failure (show error message, reset form, etc.)
+    try {
+      const response = await axios.post('/api/login', { username, password });
+      console.log(response.data.message);
+      // Optionally, handle success (redirect, update state, etc.)
+    } catch (error) {
+      console.error('Login failed:', error.response.data.error);
+      // Optionally, handle failure (show error message, reset form, etc.)
     }
   };
 
