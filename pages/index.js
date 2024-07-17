@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
 
 export default function Home() {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [isLoginVisible, setIsLoginVisible] = useState(false);
+
   const passwordInputRef = useRef(null);
 
   const handleSignUp = async (e) => {
@@ -12,14 +12,8 @@ export default function Home() {
     const username = document.getElementById('signup-username').value;
     const password = document.getElementById('signup-password').value;
 
-    try {
-      const response = await axios.post('/api/signup', { username, password });
-      console.log(response.data.message);
-      // Optionally, handle success (clear form, show message, etc.)
-    } catch (error) {
-      console.error('Signup failed:', error.response.data.error);
-      // Optionally, handle failure (show error message, reset form, etc.)
-    }
+    // Mocking signup logic without axios
+    console.log(`Signing up user: ${username} with password: ${password}`);
   };
 
   const handleLogin = async (e) => {
@@ -27,14 +21,8 @@ export default function Home() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
-    try {
-      const response = await axios.post('/api/login', { username, password });
-      console.log(response.data.message);
-      // Optionally, handle success (redirect, update state, etc.)
-    } catch (error) {
-      console.error('Login failed:', error.response.data.error);
-      // Optionally, handle failure (show error message, reset form, etc.)
-    }
+    // Mocking login logic without axios
+    console.log(`Logging in user: ${username} with password: ${password}`);
   };
 
   const checkPasswordStrength = (password) => {
@@ -73,16 +61,10 @@ export default function Home() {
       </Head>
 
       <header className="navbar">
-        <div className="title" style={{ color: '#fff' }}>
-          British Columbia, Vancouver
-        </div>
+        <div className="title" style={{ color: '#fff' }}>British Columbia, Vancouver</div>
         <div>
-          <a href="#" style={{ color: '#fff' }}>
-            Home
-          </a>
-          <a href="#" style={{ color: '#fff' }}>
-            Privacy Policy
-          </a>
+          <a href="#" style={{ color: '#fff' }}>Home</a>
+          <a href="#" style={{ color: '#fff' }}>Privacy Policy</a>
         </div>
       </header>
 
@@ -92,13 +74,7 @@ export default function Home() {
             <div id="signup-container">
               <h1 style={{ color: '#fff' }}>Sign Up</h1>
               <form id="signup-form" onSubmit={handleSignUp}>
-                <input
-                  type="text"
-                  id="signup-username"
-                  placeholder="Username"
-                  required
-                  style={{ color: '#000' }}
-                />
+                <input type="text" id="signup-username" placeholder="Username" required style={{ color: '#000' }} />
                 <input
                   type="password"
                   id="signup-password"
@@ -107,9 +83,7 @@ export default function Home() {
                   ref={passwordInputRef}
                   style={{ color: '#000' }}
                 />
-                <div className="complexity-label" style={{ color: '#fff' }}>
-                  Password complexity level
-                </div>
+                <div className="complexity-label" style={{ color: '#fff' }}>Password complexity level</div>
                 <div className="password-strength">
                   <div
                     className="strength-bar"
@@ -138,23 +112,9 @@ export default function Home() {
             <div id="login-container">
               <h1 style={{ color: '#fff' }}>Login</h1>
               <form id="login-form" onSubmit={handleLogin}>
-                <input
-                  type="text"
-                  id="login-username"
-                  placeholder="Username"
-                  required
-                  style={{ color: '#000' }}
-                />
-                <input
-                  type="password"
-                  id="login-password"
-                  placeholder="Password"
-                  required
-                  style={{ color: '#000' }}
-                />
-                <button type="submit" style={{ color: '#fff' }}>
-                  Login
-                </button>
+                <input type="text" id="login-username" placeholder="Username" required style={{ color: '#000' }} />
+                <input type="password" id="login-password" placeholder="Password" required style={{ color: '#000' }} />
+                <button type="submit" style={{ color: '#fff' }}>Login</button>
               </form>
               <p id="login-message" style={{ color: '#fff' }}></p>
             </div>
