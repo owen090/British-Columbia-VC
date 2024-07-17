@@ -42,10 +42,10 @@ export default function Home() {
       </Head>
 
       <header className="navbar">
-        <div className="title">British Columbia, Vancouver</div>
+        <div className="title" style={{ color: '#fff' }}>British Columbia, Vancouver</div>
         <div>
-          <a href="#">Home</a>
-          <a href="#">Privacy Policy</a>
+          <a href="#" style={{ color: '#fff' }}>Home</a>
+          <a href="#" style={{ color: '#fff' }}>Privacy Policy</a>
         </div>
       </header>
 
@@ -77,7 +77,7 @@ export default function Home() {
                 <button type="submit">Sign Up</button>
               </form>
               <p id="signup-message" style={{ color: '#fff' }}></p>
-              <p>
+              <p style={{ color: '#fff' }}>
                 Already signed up?{' '}
                 <a
                   href="#"
