@@ -6,60 +6,6 @@ export default function Home() {
   const [isLoginVisible, setIsLoginVisible] = useState(false)
   const passwordInputRef = useRef(null)
 
-  // Handler for sign-up form submission
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    const username = document.getElementById('signup-username').value;
-    const password = document.getElementById('signup-password').value;
-
-    try {
-      const response = await fetch('/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (response.ok) {
-        console.log('Signup successful');
-        // Optionally, you can redirect or show a success message
-      } else {
-        console.error('Signup failed');
-        // Handle signup failure (show error message, reset form, etc.)
-      }
-    } catch (error) {
-      console.error('Error during signup:', error);
-    }
-  };
-
-  // Handler for login form submission
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (response.ok) {
-        console.log('Login successful');
-        // Optionally, you can redirect or update user authentication state
-      } else {
-        console.error('Login failed');
-        // Handle login failure (show error message, reset form, etc.)
-      }
-    } catch (error) {
-      console.error('Error during login:', error);
-    }
-  };
-
   const checkPasswordStrength = (password) => {
     let strength = 0
     if (password.length >= 8) strength += 1
@@ -108,7 +54,7 @@ export default function Home() {
           {!isLoginVisible ? (
             <div id="signup-container">
               <h1 style={{ color: '#fff' }}>Sign Up</h1>
-              <form id="signup-form" onSubmit={handleSignUp}>
+              <form id="signup-form" onSubmit={(e) => e.preventDefault()}>
                 <input type="text" id="signup-username" placeholder="Username" required style={{ color: '#000' }} />
                 <input
                   type="password"
@@ -146,7 +92,7 @@ export default function Home() {
           ) : (
             <div id="login-container">
               <h1 style={{ color: '#fff' }}>Login</h1>
-              <form id="login-form" onSubmit={handleLogin}>
+              <form id="login-form" onSubmit={(e) => e.preventDefault()}>
                 <input type="text" id="login-username" placeholder="Username" required style={{ color: '#000' }} />
                 <input type="password" id="login-password" placeholder="Password" required style={{ color: '#000' }} />
                 <button type="submit" style={{ color: '#fff' }}>Login</button>
