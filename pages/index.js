@@ -1,175 +1,84 @@
-import { useEffect } from 'react';
-import Head from 'next/head';
-import Header from '@components/Header';
-import Footer from '@components/Footer';
+import Head from 'next/head'
+import Header from '@components/Header'
+import Footer from '@components/Footer'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
+  const [passwordStrength, setPasswordStrength] = useState(0)
+
+  const checkPasswordStrength = (password) => {
+    let strength = 0
+    if (password.length > 5) strength += 20
+    if (password.match(/[A-Z]/)) strength += 20
+    if (password.match(/[0-9]/)) strength += 20
+    if (password.match(/[^a-zA-Z0-9]/)) strength += 20
+    if (password.length > 10) strength += 20
+    setPasswordStrength(strength)
+  }
+
   useEffect(() => {
-    function signup(event) {
-      event.preventDefault();
-      const username = document.getElementById('signup-username').value;
-      const password = document.getElementById('signup-password').value;
-      fetch('/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            showMessage('Sign-up successful!');
-          } else {
-            showMessage(`Sign-up failed: ${data.message}`);
-          }
-        });
-    }
-
-    function login(event) {
-      event.preventDefault();
-      const username = document.getElementById('login-username').value;
-      const password = document.getElementById('login-password').value;
-      fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            showLoginMessage('Login successful!');
-          } else {
-            showLoginMessage(`Login failed: ${data.message}`);
-          }
-        });
-    }
-
-    function showMessage(message) {
-      document.getElementById('signup-message').textContent = message;
-    }
-
-    function showLoginMessage(message) {
-      document.getElementById('login-message').textContent = message;
-    }
-
-    function checkPasswordStrength() {
-      const password = document.getElementById('signup-password').value;
-      const strengthBar = document.getElementById('strength-bar');
-      let strength = 0;
-      if (password.length >= 8) strength += 1;
-      if (password.match(/[a-z]+/)) strength += 1;
-      if (password.match(/[A-Z]+/)) strength += 1;
-      if (password.match(/[0-9]+/)) strength += 1;
-      if (password.match(/[$@#&!]+/)) strength += 1;
-      switch (strength) {
-        case 0:
-          strengthBar.style.width = '0';
-          strengthBar.style.backgroundColor = 'red';
-          break;
-        case 1:
-          strengthBar.style.width = '20%';
-          strengthBar.style.backgroundColor = 'red';
-          break;
-        case 2:
-          strengthBar.style.width = '40%';
-          strengthBar.style.backgroundColor = 'orange';
-          break;
-        case 3:
-          strengthBar.style.width = '60%';
-          strengthBar.style.backgroundColor = 'yellow';
-          break;
-        case 4:
-          strengthBar.style.width = '80%';
-          strengthBar.style.backgroundColor = 'lightgreen';
-          break;
-        case 5:
-          strengthBar.style.width = '100%';
-          strengthBar.style.backgroundColor = 'green';
-          break;
-      }
-    }
-
-    function showLogin() {
-      document.getElementById('signup-container').style.display = 'none';
-      document.getElementById('login-container').style.display = 'block';
-    }
-
-    document.getElementById('signup-form').addEventListener('submit', signup);
-    document.getElementById('login-form').addEventListener('submit', login);
-    document.getElementById('signup-password').addEventListener('input', checkPasswordStrength);
-    document.querySelector('.login-link').addEventListener('click', showLogin);
-  }, []);
+    const passwordInput = document.getElementById('signup-password')
+    passwordInput.addEventListener('input', (event) => {
+      checkPasswordStrength(event.target.value)
+    })
+  }, [])
 
   return (
     <div className="container">
       <Head>
-        <title>British Columbia Forum</title>
+        <title>Next.js Starter!</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header title="Welcome to British Columbia, Vancouver" />
-
-      <div className="navbar">
-        <div className="title">British Columbia, Vancouver</div>
-        <div>
-          <a href="#">Home</a>
-          <a href="#">Privacy Policy</a>
-        </div>
-      </div>
-
-      <div className="container" id="signup-container">
-        <h1>Sign Up</h1>
-        <form id="signup-form">
-          <input type="text" id="signup-username" placeholder="Username" required />
-          <input type="password" id="signup-password" placeholder="Password" required />
-          <div className="complexity-label">Complexity level</div>
-          <div className="password-strength">
-            <div className="strength-bar" id="strength-bar"></div>
+      <header className="header">
+        <div className="navbar">
+          <div className="title">British Columbia, Vancouver</div>
+          <div className="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Privacy Policy</a>
           </div>
-          <button type="submit">Sign Up</button>
-        </form>
-        <p id="signup-message"></p>
-        <p>Already signed up? <a href="#" className="login-link">Log in here</a></p>
-      </div>
+        </div>
+      </header>
 
-      <div className="container" id="login-container" style={{ display: 'none' }}>
-        <h1>Login</h1>
-        <form id="login-form">
-          <input type="text" id="login-username" placeholder="Username" required />
-          <input type="password" id="login-password" placeholder="Password" required />
-          <button type="submit">Login</button>
-        </form>
-        <p id="login-message"></p>
-      </div>
+      <main>
+        <div className="container">
+          <h1>Sign Up</h1>
+          <form id="signup-form">
+            <input type="text" id="signup-username" placeholder="Username" />
+            <input type="password" id="signup-password" placeholder="Password" />
+            <div className="complexity-label">Complexity level</div>
+            <div className="password-strength">
+              <div
+                className="strength-bar"
+                style={{ width: `${passwordStrength}%`, backgroundColor: getStrengthColor(passwordStrength) }}
+              ></div>
+            </div>
+            <button type="submit">Sign Up</button>
+          </form>
+          <p>Already signed up? <a href="#" className="login-link">Log in here</a></p>
+        </div>
+      </main>
 
-      <Footer />
+      <footer className="footer">
+        <Footer />
+      </footer>
 
       <style jsx>{`
         body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          background-image: url('background-image.jpg');
+          background: url('/background-image.jpg') no-repeat center center fixed;
           background-size: cover;
-          background-position: center;
-          color: #fff;
-          height: 100vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          font-family: Arial, sans-serif;
+        }
+        .header {
+          padding: 20px;
+          background: rgba(0, 0, 0, 0.7);
+          color: white;
+          text-align: center;
         }
         .navbar {
-          width: 100%;
-          background-color: rgba(0, 0, 0, 0.8);
-          padding: 15px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          position: fixed;
-          top: 0;
-          left: 0;
         }
         .navbar a {
           color: white;
@@ -193,6 +102,7 @@ export default function Home() {
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
           width: 300px;
           text-align: center;
+          margin: auto;
         }
         form {
           margin-bottom: 20px;
@@ -247,7 +157,22 @@ export default function Home() {
           font-size: 14px;
           margin-top: 8px;
         }
+        footer {
+          padding: 20px;
+          text-align: center;
+          color: white;
+          background: rgba(0, 0, 0, 0.7);
+          border-top: 1px solid #ccc;
+          margin-top: 20px;
+        }
       `}</style>
     </div>
-  );
+  )
+}
+
+const getStrengthColor = (strength) => {
+  if (strength < 40) return 'red'
+  if (strength < 60) return 'orange'
+  if (strength < 80) return 'yellow'
+  return 'green'
 }
